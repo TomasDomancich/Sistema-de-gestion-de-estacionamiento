@@ -1,20 +1,31 @@
+package modelo;
+
+import java.time.LocalDateTime;
+
+/**
+ * Representa un espacio individual dentro del estacionamiento.
+ * Puede estar ocupado por un vehículo o libre.
+ */
 public class EspacioEstacionamiento {
 
+    // ===== Atributos =====
     private int idEspacio;
     private boolean ocupado;
-    private String tipo; // por ejemplo: "auto", "moto", "discapacitado"
+    private String tipo; // "auto", "moto", "discapacitado"
+    private Vehiculo vehiculoOcupante; // Vehículo actualmente en el espacio
+    private Estacionamiento estacionamiento; // Estacionamiento al que pertenece
 
-    // Constructor vacío
+    // ===== Constructores =====
     public EspacioEstacionamiento() {}
 
-    // Constructor con parámetros
-    public EspacioEstacionamiento(int idEspacio, boolean ocupado, String tipo) {
+    public EspacioEstacionamiento(int idEspacio, String tipo) {
         this.idEspacio = idEspacio;
-        this.ocupado = ocupado;
         this.tipo = tipo;
+        this.ocupado = false;
+        this.vehiculoOcupante = null;
     }
 
-    // Getters y Setters
+    // ===== Getters y Setters =====
     public int getIdEspacio() {
         return idEspacio;
     }
@@ -27,10 +38,6 @@ public class EspacioEstacionamiento {
         return ocupado;
     }
 
-    public void setOcupado(boolean ocupado) {
-        this.ocupado = ocupado;
-    }
-
     public String getTipo() {
         return tipo;
     }
@@ -39,33 +46,67 @@ public class EspacioEstacionamiento {
         this.tipo = tipo;
     }
 
-    // ---- Métodos útiles ----
+    public Vehiculo getVehiculoOcupante() {
+        return vehiculoOcupante;
+    }
 
-    // Ocupa el espacio si está libre
-    public boolean ocupar() {
+    public void setVehiculoOcupante(Vehiculo vehiculoOcupante) {
+        this.vehiculoOcupante = vehiculoOcupante;
+    }
+
+    public Estacionamiento getEstacionamiento() {
+        return estacionamiento;
+    }
+
+    public void setEstacionamiento(Estacionamiento estacionamiento) {
+        this.estacionamiento = estacionamiento;
+    }
+
+    // ===== Métodos de negocio =====
+
+    /** Retorna true si el espacio está libre. */
+    public boolean estaDisponible() {
+        return !ocupado;
+    }
+
+    /**
+     * Ocupa el espacio con un vehículo, si está libre.
+     * @param vehiculo Vehículo a estacionar.
+     * @return true si se ocupó exitosamente, false si ya estaba ocupado.
+     */
+    public boolean ocupar(Vehiculo vehiculo) {
         if (!ocupado) {
-            ocupado = true;
+            this.vehiculoOcupante = vehiculo;
+            this.ocupado = true;
+            vehiculo.setHoraEntrada(LocalDateTime.now());
             return true;
         }
         return false; // ya estaba ocupado
     }
 
-    // Libera el espacio si está ocupado
+    /**
+     * Libera el espacio y elimina la referencia al vehículo.
+     * Registra la hora de salida en el vehículo.
+     * @return true si se liberó correctamente, false si ya estaba libre.
+     */
     public boolean liberar() {
-        if (ocupado) {
-            ocupado = false;
+        if (ocupado && vehiculoOcupante != null) {
+            vehiculoOcupante.setHoraSalida(LocalDateTime.now());
+            this.vehiculoOcupante = null;
+            this.ocupado = false;
             return true;
         }
         return false; // ya estaba libre
     }
 
-    // Muestra información del espacio
     @Override
     public String toString() {
+        String placa = (vehiculoOcupante != null) ? vehiculoOcupante.getPlaca() : "N/A";
         return "EspacioEstacionamiento{" +
                 "idEspacio=" + idEspacio +
                 ", ocupado=" + ocupado +
                 ", tipo='" + tipo + '\'' +
+                ", vehiculo='" + placa + '\'' +
                 '}';
     }
 }

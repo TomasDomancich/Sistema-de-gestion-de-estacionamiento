@@ -3,8 +3,13 @@ package modelo;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+/**
+ * Representa un vehículo que ingresa al estacionamiento.
+ * Contiene información del propietario, horarios de entrada/salida
+ * y métodos para calcular la estadía.
+ */
 public class Vehiculo {
-    
+
     // ===== Atributos =====
     private int idVehiculo;
     private String placa;
@@ -19,12 +24,13 @@ public class Vehiculo {
     }
 
     public Vehiculo(int idVehiculo, String placa, String tipo, Cliente propietario) {
+        if (placa == null || placa.isBlank()) {
+            throw new IllegalArgumentException("La placa no puede estar vacía");
+        }
         this.idVehiculo = idVehiculo;
         this.placa = placa;
         this.tipo = tipo;
         this.propietario = propietario;
-        this.horaEntrada = null;
-        this.horaSalida = null;
     }
 
     // ===== Getters y Setters =====
@@ -41,6 +47,9 @@ public class Vehiculo {
     }
 
     public void setPlaca(String placa) {
+        if (placa == null || placa.isBlank()) {
+            throw new IllegalArgumentException("La placa no puede estar vacía");
+        }
         this.placa = placa;
     }
 
@@ -76,7 +85,18 @@ public class Vehiculo {
         this.propietario = propietario;
     }
 
-    // ===== Métodos adicionales =====
+    // ===== Métodos de negocio =====
+
+    /** Registra la hora de entrada actual del vehículo */
+    public void registrarEntrada() {
+        this.horaEntrada = LocalDateTime.now();
+    }
+
+    /** Registra la hora de salida actual del vehículo */
+    public void registrarSalida() {
+        this.horaSalida = LocalDateTime.now();
+    }
+
     /**
      * Calcula la duración de la estadía si hay hora de entrada y salida.
      * @return Duración en minutos, o -1 si faltan datos.
@@ -86,5 +106,17 @@ public class Vehiculo {
             return Duration.between(horaEntrada, horaSalida).toMinutes();
         }
         return -1; // Indica que no se puede calcular
+    }
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" +
+                "idVehiculo=" + idVehiculo +
+                ", placa='" + placa + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", propietario=" + (propietario != null ? propietario.getNombre() : "Sin propietario") +
+                ", horaEntrada=" + horaEntrada +
+                ", horaSalida=" + horaSalida +
+                '}';
     }
 }

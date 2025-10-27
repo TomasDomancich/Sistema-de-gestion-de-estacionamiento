@@ -1,7 +1,11 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa un empleado del sistema de estacionamiento.
+ */
 public class Empleado {
 
     // ===== Atributos =====
@@ -11,19 +15,20 @@ public class Empleado {
     private String dni;
     private String email;
     private String telefono;
-    private String rol;          // Ej: "Administrador", "Operador"
-    private String contraseña;   // Se puede encriptar más adelante
-    private boolean estado;      // true = activo, false = inactivo
+    private Rol rol;          // Enum: ADMINISTRADOR, OPERADOR
+    private String contraseña;
+    private boolean estado;   // true = activo, false = inactivo
 
-    private List<Reporte> reportesGenerados;  // Reportes asociados al empleado
+    private List<Reporte> reportesGenerados;
 
     // ===== Constructores =====
     public Empleado() {
+        this.reportesGenerados = new ArrayList<>();
+        this.estado = true;
     }
 
-    public Empleado(int idEmpleado, String nombre, String apellido, String dni, 
-                    String email, String telefono, String rol, String contraseña, 
-                    boolean estado, List<Reporte> reportesGenerados) {
+    public Empleado(int idEmpleado, String nombre, String apellido, String dni,
+                    String email, String telefono, Rol rol, String contraseña, boolean estado) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -33,7 +38,7 @@ public class Empleado {
         this.rol = rol;
         this.contraseña = contraseña;
         this.estado = estado;
-        this.reportesGenerados = reportesGenerados;
+        this.reportesGenerados = new ArrayList<>();
     }
 
     // ===== Getters y Setters =====
@@ -85,11 +90,11 @@ public class Empleado {
         this.telefono = telefono;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
@@ -101,11 +106,11 @@ public class Empleado {
         this.contraseña = contraseña;
     }
 
-    public boolean isEstado() {
+    public boolean isActivo() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setActivo(boolean estado) {
         this.estado = estado;
     }
 
@@ -115,5 +120,44 @@ public class Empleado {
 
     public void setReportesGenerados(List<Reporte> reportesGenerados) {
         this.reportesGenerados = reportesGenerados;
+    }
+
+    // ===== Métodos funcionales =====
+
+    /**
+     * Agrega un reporte generado por este empleado.
+     */
+    public void agregarReporte(Reporte reporte) {
+        this.reportesGenerados.add(reporte);
+    }
+
+    /**
+     * Cambia el estado del empleado a activo.
+     */
+    public void activar() {
+        this.estado = true;
+    }
+
+    /**
+     * Cambia el estado del empleado a inactivo.
+     */
+    public void desactivar() {
+        this.estado = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "id=" + idEmpleado +
+                ", nombre='" + nombre + " " + apellido + '\'' +
+                ", rol=" + rol +
+                ", activo=" + estado +
+                ", reportesGenerados=" + reportesGenerados.size() +
+                '}';
+    }
+
+    // ===== Enum interno =====
+    public enum Rol {
+        ADMINISTRADOR, OPERADOR
     }
 }

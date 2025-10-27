@@ -1,7 +1,12 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa a un cliente que posee uno o varios vehículos registrados
+ * en el sistema de estacionamiento.
+ */
 public class Cliente {
 
     // ===== Atributos =====
@@ -13,15 +18,16 @@ public class Cliente {
     private String email;
     private boolean estado;   // true = activo, false = inactivo
 
-    private List<Vehiculo> vehiculos;  // Asociación con vehículos del cliente
+    private List<Vehiculo> vehiculos;  // Vehículos asociados al cliente
 
     // ===== Constructores =====
     public Cliente() {
+        this.vehiculos = new ArrayList<>();
+        this.estado = true;
     }
 
-    public Cliente(int idCliente, String nombre, String apellido, String dni, 
-                   String telefono, String email, boolean estado, 
-                   List<Vehiculo> vehiculos) {
+    public Cliente(int idCliente, String nombre, String apellido, String dni,
+                   String telefono, String email, boolean estado) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -29,7 +35,7 @@ public class Cliente {
         this.telefono = telefono;
         this.email = email;
         this.estado = estado;
-        this.vehiculos = vehiculos;
+        this.vehiculos = new ArrayList<>();
     }
 
     // ===== Getters y Setters =====
@@ -81,11 +87,11 @@ public class Cliente {
         this.email = email;
     }
 
-    public boolean isEstado() {
+    public boolean isActivo() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setActivo(boolean estado) {
         this.estado = estado;
     }
 
@@ -95,5 +101,49 @@ public class Cliente {
 
     public void setVehiculos(List<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
+    }
+
+    // ===== Métodos funcionales =====
+
+    /**
+     * Agrega un vehículo a la lista del cliente.
+     * @param vehiculo vehículo nuevo
+     */
+    public void agregarVehiculo(Vehiculo vehiculo) {
+        this.vehiculos.add(vehiculo);
+    }
+
+    /**
+     * Elimina un vehículo del cliente por su placa.
+     * @param placa la matrícula del vehículo
+     * @return true si se eliminó correctamente
+     */
+    public boolean eliminarVehiculo(String placa) {
+        return vehiculos.removeIf(v -> v.getPlaca().equalsIgnoreCase(placa));
+    }
+
+    /**
+     * Activa al cliente.
+     */
+    public void activar() {
+        this.estado = true;
+    }
+
+    /**
+     * Desactiva al cliente.
+     */
+    public void desactivar() {
+        this.estado = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + idCliente +
+                ", nombre='" + nombre + " " + apellido + '\'' +
+                ", dni='" + dni + '\'' +
+                ", activo=" + estado +
+                ", vehiculos=" + vehiculos.size() +
+                '}';
     }
 }
