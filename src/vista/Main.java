@@ -1,6 +1,8 @@
-package logica;
+package vista;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +14,25 @@ public class Main {
         bmw.setPlaca("Erx");
         bmw.setIdVehiculo(123);
         bmw.setTipo("mediano");
+        bmw.setHoraEntrada(LocalDateTime.MIN);
+        bmw.setHoraSalida(LocalDateTime.MIN);
+        //bmw.setPropietario(enNegro);
         
         Estacionamiento box = new Estacionamiento();
         box.setDireccion("Avenida Alcorta");
         box.setEspaciosTotales(20);
         box.setIdEstacionamiento(12);
         box.setNombre("Luna Azul");
+        box.setHoraApertura(LocalTime.MAX);
+        box.setHoraCierre(LocalTime.MIN);
+        //box.setEspacios(espacios);
         
         espacioEstacionamiento lista = new espacioEstacionamiento();
         lista.setIdEspacio(1);
         lista.setTipo("estandar");
         lista.setEstacionamiento(box);
+        lista.setVehiculoOcupante(bmw);
+        //lista.ocupar(bmw);
         
         Cliente bot = new Cliente();
         bot.setDni("123456789");
@@ -32,6 +42,7 @@ public class Main {
         bot.setTelefono("1122334455");
         bot.setApellido("Monterey");
         bot.setActivo(true);
+        //bot.setVehiculos(vehiculos);
 
         Empleado enNegro = new Empleado();
         enNegro.setNombre("Franco");
@@ -43,6 +54,7 @@ public class Main {
         enNegro.setIdEmpleado(1);
         enNegro.setRol(Empleado.Rol.OPERADOR);
         enNegro.setTelefono("1188446677");
+        //enNegro.setReportesGenerados(reportesGenerados);
         
         /*
         Reporte ticket = new Reporte();
