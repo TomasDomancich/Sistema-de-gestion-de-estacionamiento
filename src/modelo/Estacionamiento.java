@@ -98,7 +98,7 @@ public class Estacionamiento {
     /** Inicializa los espacios del estacionamiento. */
     private void inicializarEspacios() {
         for (int i = 1; i <= espaciosTotales; i++) {
-            EspacioEstacionamiento espacio = new EspacioEstacionamiento(i, "auto"); // por defecto
+            modelo.EspacioEstacionamiento espacio = new modelo.EspacioEstacionamiento(i, "auto"); // por defecto
             espacio.setEstacionamiento(this);
             espacios.add(espacio);
         }

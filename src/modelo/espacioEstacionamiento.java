@@ -16,13 +16,12 @@ public class EspacioEstacionamiento {
     private Estacionamiento estacionamiento; // Estacionamiento al que pertenece
 
     // ===== Constructores =====
-    public EspacioEstacionamiento() {}
-
     public EspacioEstacionamiento(int idEspacio, String tipo) {
         this.idEspacio = idEspacio;
-        this.tipo = tipo;
         this.ocupado = false;
+        this.tipo = tipo;
         this.vehiculoOcupante = null;
+        this.estacionamiento = null;
     }
 
     // ===== Getters y Setters =====
